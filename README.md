@@ -1,34 +1,36 @@
 # TurboWarp App Template
 
-TurboWarpアプリの初期雛形です。用途固有の機能は未実装です。
+**English** | [日本語](README.ja.md)
 
-## 現在の内容
+An initial scaffold for a TurboWarp app. No use-case-specific features are implemented yet.
 
-turbowarp-app-templateから生成した初期雛形です。用途固有の機能は未実装です。
+## What's included
 
-- 共通app-shellを利用したモード選択・案内・エラー表示。
-- 展開済みSB3ソースと、緑の旗で状態変数を更新する起動確認スクリプト。
-- SB3と配布ページのビルド、SHA-256の記録、CI。
+This is the initial scaffold generated from turbowarp-app-template. Use-case-specific features are not implemented.
 
-配布ページはTurboWarpプレイヤーを内蔵せず、起動確認用SB3のダウンロードを提供します。開発サーバーでダウンロードする際は事前にbuild:sb3を実行してください。
+- Mode selection, guidance, and error display built on the shared app-shell.
+- Unpacked SB3 sources plus a startup-check script that updates a state variable when the green flag is clicked.
+- Builds for the SB3 and the distribution page, SHA-256 recording, and CI.
 
-## 実装予定
+The distribution page does not embed the TurboWarp player; it offers the startup-check SB3 for download. Run `build:sb3` before downloading from the dev server.
 
-- 用途固有の操作と拡張接続を実装する。
+## Planned
 
-## モード
+- Implement use-case-specific operations and extension connections.
 
-- **起動確認**：SB3をダウンロードしてTurboWarpで開き、緑の旗で起動状態を確認します。
+## Modes
 
-## 依存と責務
+- **Startup check**: Download the SB3, open it in TurboWarp, and confirm startup with the green flag.
 
-- テンプレートには用途固有の拡張依存を含めません。
+## Dependencies and responsibilities
 
-実際の依存はpackage.jsonのturbowarp-app-shell 0.2.0のみです。上記の用途固有の接続は予定であり、未公開の初期拡張に依存しません。追加時には拡張のexact version、配布物hash、API manifest、評価順序を固定します。
+- The template does not bundle use-case-specific extension dependencies.
 
-## 構成と開発
+The only actual dependency is turbowarp-app-shell 0.2.0 in package.json. The use-case-specific connections above are planned, and do not rely on any unreleased early extension. When one is added, its exact version, artifact hash, API manifest, and evaluation order will be pinned.
 
-Node.js >=22.18.0、pnpm 11.11.0。
+## Layout and development
+
+Node.js >=22.18.0, pnpm 11.11.0.
 
 ```bash
 corepack enable
@@ -37,45 +39,45 @@ pnpm check
 pnpm dev
 ```
 
-- config/app.json：名前、モード、説明、実装予定。
-- config/feature-flags.ts：起動時固定・既定OFFの実験機能フラグ。
-- scripts/project.ts：起動確認用SB3の正本。
-- apps/main/source：生成した展開済みSB3ソース。
-- src：共通シェルを利用する配布ページ。
-- public/downloads：生成SB3とrelease.json。
-- dist：配布ページとダウンロードのビルド結果。
+- `config/app.json`: name, modes, description, and planned work.
+- `config/feature-flags.ts`: experimental feature flags, fixed at startup and OFF by default.
+- `scripts/project.ts`: the source of truth for the startup-check SB3.
+- `apps/main/source`: the generated unpacked SB3 sources.
+- `src`: the distribution page built on the shared shell.
+- `public/downloads`: the generated SB3 and release.json.
+- `dist`: build output for the distribution page and downloads.
 
-project.tsやtitleを変更したらpnpm source:updateで生成ソースを更新します。生成SB3・distはGit管理対象外です。アーカイブはsb3-toolchainで生成します。
+After changing `project.ts` or the title, run `pnpm source:update` to regenerate the sources. Generated SB3 files and `dist` are not tracked by Git. Archives are produced with sb3-toolchain.
 
-## 段階導入と受け入れ基準
+## Staged rollout and acceptance criteria
 
-1. 関連GitHub Issueで既存実装の抽出対象、依存、DoD、切戻しを確定する。
-2. 用途固有の経路を既定OFFで追加し、既存側は委譲へ置き換える。
-3. 機材による統合検証で誤差・遅延・停止と復旧を記録する。
-4. 本体拡張のアルゴリズムをアプリに重複実装しない。
+1. In the related GitHub Issue, settle what to extract from the existing implementation, its dependencies, the DoD, and the rollback path.
+2. Add the use-case-specific path behind a flag that is OFF by default, and replace the existing path with delegation.
+3. Record error, latency, stalls, and recovery in hardware integration testing.
+4. Do not reimplement the core extension's algorithms inside the app.
 
-初期雛形のDoDはpnpm check成功、SB3で緑の旗による状態更新、配布ページで説明・モード選択・SB3ダウンロードが確認できることです。カメラを使う用途機能の実機検証は未実施です。
+The DoD for the initial scaffold is: `pnpm check` passes, the SB3 updates its state on the green flag, and the distribution page shows the description, mode selection, and SB3 download. Real-device verification of camera-based features has not been performed.
 
-## ロールバックとタスク管理
+## Rollback and task management
 
-新経路はconfig/feature-flags.tsのフラグOFFで止め、移行中は旧アプリ経路と互換読取りを保持します。初期フラグをONにしても用途固有の機能は実装されません。
+New paths are stopped by turning their flag OFF in `config/feature-flags.ts`, and compatibility reads for the old app path are kept during migration. Turning the initial flags ON does not implement any use-case-specific feature.
 
-GitHub Issuesを進捗の正本とし、start/done/blockedを記録します。本READMEはローカル草案であり、Issue投稿・push・公開は行っていません。
+GitHub Issues are the source of truth for progress, recording start/done/blocked. This README is a local draft; nothing has been posted to Issues, pushed, or published.
 
-## 抽出元
+## Origin
 
-紙芝居アプリとrealtime-motion-capture-appから抽出した共通構成を利用しています。詳しくは[抽出記録](docs/extraction.md)を参照してください。
+The shared structure is extracted from the kamishibai (picture-story) app and realtime-motion-capture-app. See the [extraction notes](docs/extraction.md) (Japanese) for details.
 
-## ライセンス
+## License
 
-MPL-2.0。packageは初期状態ではprivateです。
+MPL-2.0. The package is private in its initial state.
 
-## テンプレートからの作成
+## Creating from the template
 
-空リポジトリをcloneし、config/app.json形式の設定JSONを用意して実行します。既存.gitを保持し、他のファイルがある場合は拒否します。
+Clone an empty repository, prepare a config JSON in the `config/app.json` format, and run the command below. It keeps the existing `.git` and refuses to run if any other files are present.
 
 ```bash
 pnpm template:init /absolute/path/turbowarp-example-app /absolute/path/app-config.json
 ```
 
-生成先でpnpm install --frozen-lockfile、pnpm format:write、pnpm checkを実行します。アプリ固有のREADMEは生成され、テンプレートは変更されません。
+In the generated project, run `pnpm install --frozen-lockfile`, `pnpm format:write`, and `pnpm check`. An app-specific README is generated, and the template itself is not modified.
