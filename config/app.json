@@ -1,0 +1,14 @@
+{
+  "slug": "turbowarp-app-template",
+  "title": "TurboWarp App Template",
+  "summary": "TurboWarpアプリの初期雛形です。用途固有の機能は未実装です。",
+  "modes": [
+    {
+      "id": "example",
+      "label": "起動確認",
+      "description": "SB3をダウンロードしてTurboWarpで開き、緑の旗で起動状態を確認します。"
+    }
+  ],
+  "plannedFeatures": ["用途固有の操作と拡張接続を実装する。"],
+  "plannedDependencies": []
+}
