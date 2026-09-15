@@ -39,7 +39,7 @@ pnpm check
 pnpm dev
 ```
 
-- `config/app.json`: name, modes, description, and planned work.
+- `config/app.json`: name, modes, description, and planned work. English README text goes under `en`.
 - `config/feature-flags.ts`: experimental feature flags, fixed at startup and OFF by default.
 - `scripts/project.ts`: the source of truth for the startup-check SB3.
 - `apps/main/source`: the generated unpacked SB3 sources.
@@ -80,4 +80,4 @@ Clone an empty repository, prepare a config JSON in the `config/app.json` format
 pnpm template:init /absolute/path/turbowarp-example-app /absolute/path/app-config.json
 ```
 
-In the generated project, run `pnpm install --frozen-lockfile`, `pnpm format:write`, and `pnpm check`. An app-specific README is generated, and the template itself is not modified.
+In the generated project, run `pnpm install --frozen-lockfile`, `pnpm format:write`, and `pnpm check`. App-specific READMEs are generated as an English `README.md` and a Japanese `README.ja.md` that cross-link each other, and the template itself is not modified. If the config JSON omits `en`, the Japanese text is used in the English README too.
