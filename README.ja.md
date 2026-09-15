@@ -39,7 +39,7 @@ pnpm check
 pnpm dev
 ```
 
-- config/app.json：名前、モード、説明、実装予定。
+- config/app.json：名前、モード、説明、実装予定。英語READMEの訳文はenに置きます。
 - config/feature-flags.ts：起動時固定・既定OFFの実験機能フラグ。
 - scripts/project.ts：起動確認用SB3の正本。
 - apps/main/source：生成した展開済みSB3ソース。
@@ -80,4 +80,4 @@ MPL-2.0。packageは初期状態ではprivateです。
 pnpm template:init /absolute/path/turbowarp-example-app /absolute/path/app-config.json
 ```
 
-生成先でpnpm install --frozen-lockfile、pnpm format:write、pnpm checkを実行します。アプリ固有のREADMEは生成され、テンプレートは変更されません。
+生成先でpnpm install --frozen-lockfile、pnpm format:write、pnpm checkを実行します。アプリ固有のREADMEは英語のREADME.mdと日本語のREADME.ja.mdが相互リンク付きで生成され、テンプレートは変更されません。設定JSONのenを省略すると英語READMEにも日本語の本文が入ります。

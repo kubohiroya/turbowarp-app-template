@@ -10,5 +10,18 @@
     }
   ],
   "plannedFeatures": ["用途固有の操作と拡張接続を実装する。"],
-  "plannedDependencies": []
+  "plannedDependencies": [],
+  "en": {
+    "summary": "An initial scaffold for a TurboWarp app. No use-case-specific features are implemented yet.",
+    "modes": {
+      "example": {
+        "label": "Startup check",
+        "description": "Download the SB3, open it in TurboWarp, and confirm startup with the green flag."
+      }
+    },
+    "plannedFeatures": [
+      "Implement use-case-specific operations and extension connections."
+    ],
+    "plannedDependencies": []
+  }
 }
