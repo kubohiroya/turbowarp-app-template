@@ -1,6 +1,6 @@
 # TurboWarp App Template
 
-**English** | [日本語](README.ja.md)
+English | [日本語](README.ja.md)
 
 An initial scaffold for a TurboWarp app. No use-case-specific features are implemented yet.
 

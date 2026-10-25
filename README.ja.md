@@ -1,6 +1,6 @@
 # TurboWarp App Template
 
-[English](README.md) | **日本語**
+[English](README.md) | 日本語
 
 TurboWarpアプリの初期雛形です。用途固有の機能は未実装です。
 
