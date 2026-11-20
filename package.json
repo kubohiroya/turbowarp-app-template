@@ -1,7 +1,7 @@
 {
   "name": "@kubohiroya/turbowarp-app-template",
   "version": "0.6.0",
-  "private": true,
+  "private": false,
   "type": "module",
   "description": "Reusable SB3 source and app shell scaffold for TurboWarp applications.",
   "license": "MPL-2.0",
@@ -28,13 +28,17 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "check": "pnpm run lint && pnpm run format && pnpm run typecheck && pnpm run test && pnpm run build",
-    "template:init": "node scripts/init-app.ts"
+    "template:init": "node scripts/init-app.ts",
+    "build:cli": "tsc -p tsconfig.cli.json && node scripts/copy-cli-assets.mjs",
+    "prepack": "pnpm check && pnpm build:cli && node scripts/check-package.mjs && pnpm test:release",
+    "pack:check": "pnpm check && pnpm build:cli && node scripts/check-package.mjs && pnpm test:release",
+    "test:release": "node --test scripts/verify-release.mjs"
   },
   "dependencies": {
     "@kubohiroya/turbowarp-app-shell": "^0.6.1"
   },
   "devDependencies": {
-    "@kubohiroya/sb3-toolchain": "^0.28.0",
+    "@kubohiroya/sb3-toolchain": "^0.28.1",
     "@eslint/js": "9.39.5",
     "@types/node": "24.13.3",
     "eslint": "9.39.5",
@@ -43,5 +47,32 @@
     "vite": "8.2.2",
     "vitest": "5.0.0",
     "prettier": "3.9.6"
-  }
+  },
+  "bin": {
+    "create-turbowarp-app": "./dist/init-app.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    ".github/workflows/ci.yml",
+    ".gitignore",
+    "config/",
+    "src/",
+    "scripts/",
+    "tests/",
+    "dist/init-app.js",
+    "dist/readme.js",
+    "tsconfig.json",
+    "tsconfig.cli.json",
+    "vite.config.ts",
+    "eslint.config.js",
+    "eslint.config.mjs",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "README.md",
+    "README.ja.md",
+    "LICENSE",
+    "dist/template.gitignore"
+  ]
 }

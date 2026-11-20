@@ -26,7 +26,7 @@ The distribution page does not embed the TurboWarp player; it offers the startup
 
 - The template does not bundle use-case-specific extension dependencies.
 
-The only actual dependency is turbowarp-app-shell 0.3.0 in package.json. The use-case-specific connections above are planned, and do not rely on any unreleased early extension. When one is added, its exact version, artifact hash, API manifest, and evaluation order will be pinned.
+The only actual dependency is turbowarp-app-shell 0.6.1 in package.json. The use-case-specific connections above are planned, and do not rely on any unreleased early extension. When one is added, its exact version, artifact hash, API manifest, and evaluation order will be pinned.
 
 ## Layout and development
 
@@ -63,7 +63,7 @@ The DoD for the initial scaffold is: `pnpm check` passes, the SB3 updates its st
 
 New paths are stopped by turning their flag OFF in `config/feature-flags.ts`, and compatibility reads for the old app path are kept during migration. Turning the initial flags ON does not implement any use-case-specific feature.
 
-GitHub Issues are the source of truth for progress, recording start/done/blocked. This README is a local draft; nothing has been posted to Issues, pushed, or published.
+GitHub Issues are the source of truth for progress, recording start/done/blocked. The npm distribution and dependency reconciliation are tracked in [family Issue #130](https://github.com/kubohiroya/turbowarp-plus-packages/issues/130).
 
 ## Origin
 
@@ -71,7 +71,7 @@ The shared structure is extracted from the kamishibai (picture-story) app and re
 
 ## License
 
-MPL-2.0. The package is private in its initial state.
+MPL-2.0. The scaffold generator is published as an npm CLI; generated apps stay private.
 
 ## Creating from the template
 
@@ -82,3 +82,13 @@ pnpm template:init /absolute/path/turbowarp-example-app /absolute/path/app-confi
 ```
 
 In the generated project, run `pnpm install --frozen-lockfile`, `pnpm format:write`, and `pnpm check`. App-specific READMEs are generated as an English `README.md` and a Japanese `README.ja.md` that cross-link each other, and the template itself is not modified. If the config JSON omits `en`, the Japanese text is used in the English README too.
+
+## npm CLI
+
+With Node.js 24 or later, create an empty destination and prepare an app-config.json in the config/app.json format, then run:
+
+```sh
+npx @kubohiroya/turbowarp-app-template /absolute/path/turbowarp-example-app /absolute/path/app-config.json
+```
+
+The CLI preserves an existing .git directory and refuses other nonempty destinations. Its JavaScript entry runs from node_modules without TypeScript execution. Generated apps keep private: true and have no npm publishing configuration. The source-checkout template:init command remains available.
