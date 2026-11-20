@@ -26,7 +26,7 @@ turbowarp-app-templateから生成した初期雛形です。用途固有の機�
 
 - テンプレートには用途固有の拡張依存を含めません。
 
-実際の依存はpackage.jsonのturbowarp-app-shell 0.3.0のみです。上記の用途固有の接続は予定であり、未公開の初期拡張に依存しません。追加時には拡張のexact version、配布物hash、API manifest、評価順序を固定します。
+実際の依存はpackage.jsonのturbowarp-app-shell 0.6.1のみです。上記の用途固有の接続は予定であり、未公開の初期拡張に依存しません。追加時には拡張のexact version、配布物hash、API manifest、評価順序を固定します。
 
 ## 構成と開発
 
@@ -63,7 +63,7 @@ pnpm buildがproject.tsからapps/main/sourceを生成し、sb3-toolchainでSB3�
 
 新経路はconfig/feature-flags.tsのフラグOFFで止め、移行中は旧アプリ経路と互換読取りを保持します。初期フラグをONにしても用途固有の機能は実装されません。
 
-GitHub Issuesを進捗の正本とし、start/done/blockedを記録します。本READMEはローカル草案であり、Issue投稿・push・公開は行っていません。
+GitHub Issuesを進捗の正本とし、start/done/blockedを記録します。npm配布と依存の整合は[family Issue #130](https://github.com/kubohiroya/turbowarp-plus-packages/issues/130)で管理します。
 
 ## 抽出元
 
@@ -71,7 +71,7 @@ GitHub Issuesを進捗の正本とし、start/done/blockedを記録します。�
 
 ## ライセンス
 
-MPL-2.0。packageは初期状態ではprivateです。
+MPL-2.0。雛形生成元はnpm CLIとして配布し、生成したアプリはprivateを維持します。
 
 ## テンプレートからの作成
 
@@ -82,3 +82,13 @@ pnpm template:init /absolute/path/turbowarp-example-app /absolute/path/app-confi
 ```
 
 生成先でpnpm install --frozen-lockfile、pnpm format:write、pnpm checkを実行します。アプリ固有のREADMEは英語のREADME.mdと日本語のREADME.ja.mdが相互リンク付きで生成され、テンプレートは変更されません。設定JSONのenを省略すると英語READMEにも日本語の本文が入ります。
+
+## npm CLI
+
+Node.js 24以上で空の出力先とconfig/app.json形式の設定JSONを用意して実行します。
+
+```sh
+npx @kubohiroya/turbowarp-app-template /absolute/path/turbowarp-example-app /absolute/path/app-config.json
+```
+
+既存の.gitは保持し、それ以外のファイルがある出力先は拒否します。node_modules内ではコンパイル済みJavaScriptを実行します。生成したアプリはprivate: trueを維持し、npm公開用の設定は引き継ぎません。従来のソースcheckoutからのtemplate:initも使えます。

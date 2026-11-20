@@ -1,5 +1,6 @@
+#!/usr/bin/env node
 import { cp, readdir, readFile, writeFile } from 'node:fs/promises';
-import { resolve, relative } from 'node:path';
+import { resolve, relative, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readmeEn, readmeJa, type AppConfig } from './readme.ts';
 
@@ -11,7 +12,11 @@ if (!destinationArgument || !configArgument)
 const template = fileURLToPath(new URL('../', import.meta.url));
 const destination = resolve(destinationArgument);
 const relationship = relative(template, destination);
-if (!relationship.startsWith('..'))
+if (
+  !isAbsolute(relationship) &&
+  relationship !== '..' &&
+  !relationship.startsWith('..' + (process.platform === 'win32' ? '\\' : '/'))
+)
   throw new Error('Destination must be outside the template.');
 const contents = await readdir(destination);
 if (contents.some((name) => name !== '.git'))
@@ -66,19 +71,54 @@ if (translation !== undefined) {
   }
 }
 for (const entry of await readdir(template)) {
-  if (['.git', 'node_modules', 'dist', 'coverage'].includes(entry)) continue;
+  if (
+    [
+      '.git',
+      'node_modules',
+      'dist',
+      'coverage',
+      '.tmp',
+      '.npmrc',
+      '.npmignore',
+      '.gitignore',
+      '.env',
+      '.serena',
+      '.claude',
+    ].includes(entry)
+  )
+    continue;
   await cp(resolve(template, entry), resolve(destination, entry), {
     recursive: true,
     force: false,
     errorOnExist: true,
-    filter: (path) => relative(template, path) !== 'public/downloads',
+    filter: (path) =>
+      ![
+        'public/downloads',
+        '.github/workflows/release.yml',
+        'scripts/check-npm-release.mjs',
+        'scripts/verify-release.mjs',
+        'scripts/check-package.mjs',
+        'scripts/copy-cli-assets.mjs',
+        'tsconfig.cli.json',
+      ].includes(relative(template, path).replaceAll('\\', '/')),
   });
 }
+const ignore = await readFile(
+  new URL('../.gitignore', import.meta.url),
+  'utf8',
+).catch(() =>
+  readFile(new URL('./template.gitignore', import.meta.url), 'utf8'),
+);
+await writeFile(resolve(destination, '.gitignore'), ignore);
 const metadata = JSON.parse(
   await readFile(resolve(destination, 'package.json'), 'utf8'),
 );
 metadata.name = `@kubohiroya/${config.slug}`;
 metadata.description = config.summary;
+metadata.private = true;
+for (const key of ['bin', 'files', 'publishConfig']) delete metadata[key];
+for (const key of ['prepack', 'pack:check', 'build:cli', 'test:release'])
+  delete metadata.scripts[key];
 metadata.repository.url = `git+https://github.com/kubohiroya/${config.slug}.git`;
 metadata.homepage = `https://github.com/kubohiroya/${config.slug}#readme`;
 metadata.bugs = { url: `https://github.com/kubohiroya/${config.slug}/issues` };
