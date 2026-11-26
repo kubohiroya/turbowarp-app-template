@@ -1,6 +1,6 @@
 {
   "name": "@kubohiroya/turbowarp-app-template",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "type": "module",
   "description": "Reusable SB3 source and app shell scaffold for TurboWarp applications.",
